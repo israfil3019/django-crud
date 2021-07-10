@@ -21,6 +21,7 @@ def student_list(request):
 
     return render(request, "fscohort/student_list.html", context)
 
+
 def student_add(request):
     form = StudentForm()
     if request.method == "POST":
@@ -33,3 +34,11 @@ def student_add(request):
         'form':form,
     }
     return render(request, "fscohort/student_add.html", context)
+
+
+def student_detail(request, id):
+    student = Student.objects.get(id=id)
+    context = {
+        "student": student
+    }
+    return render(request, "fscohort/student_detail.html", context)
