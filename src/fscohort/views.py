@@ -44,18 +44,48 @@ def student_detail(request, id):
     return render(request, "fscohort/student_detail.html", context)
 
 
+# def student_update(request, id):
+    # student = get_object_or_404(Student, id=id)
+    # form = StudentForm(instance=student)
+    # if request.method == "POST":
+    #     form = StudentForm(request.POST, instance=student)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect("list")
+
+    # context = {
+    #     "student" : student,
+    #     "form" : form
+    # }
+
+    # return render(request, "fscohort/student_update.html", context)
+
+
 def student_update(request, id):
     student = get_object_or_404(Student, id=id)
-    form = StudentForm(instance=student)
-    if request.method == "POST":
-        form = StudentForm(request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            return redirect("list")
+    # student = Student.objects.get(id=id)
+    form = StudentForm(request.POST or None, instance=student)
+
+    if form.is_valid():
+        form.save()
+        return redirect('list')
 
     context = {
-        "student" : student,
-        "form" : form
+        "student": student,
+        "form": form
     }
 
     return render(request, "fscohort/student_update.html", context)
+
+
+def student_delete(request, id):
+    student = get_object_or_404(Student, id=id)
+    if request.method == "POST":
+        student.delete()
+        return redirect('list')
+
+    context = {
+        "student": student
+    }
+
+    return render(request, "fscohort/student_delete.html", context)
