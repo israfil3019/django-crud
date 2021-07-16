@@ -1,10 +1,10 @@
-from django.views.generic.base import TemplateView
 from .forms import StudentForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Student
-from django.views.generic import TemplateView,  ListView, CreateView, DetailView
+from django.views.generic import TemplateView,  ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 
 # def home(request):
@@ -95,6 +95,7 @@ def student_update(request, id):
 
     if form.is_valid():
         form.save()
+        messages.success(request, "Student succesfully updated.")
         return redirect('list')
 
     context = {
@@ -103,6 +104,15 @@ def student_update(request, id):
     }
 
     return render(request, "fscohort/student_update.html", context)
+
+
+class StudentUpdate(UpdateView):
+    model = Student
+    form_class = StudentForm
+    template_name = "fscohort/student_update.html"  # app/student_form.html  == suffix  '_form'
+    # success_url = reverse_lazy('list')
+    success_url = '/list/'
+    pk_url_kwarg = 'id'
 
 
 def student_delete(request, id):
@@ -116,3 +126,12 @@ def student_delete(request, id):
     }
 
     return render(request, "fscohort/student_delete.html", context)
+
+
+class StudentDelete(DeleteView):
+    model = Student
+    form_class = StudentForm
+    template_name = "fscohort/student_delete.html"  # app/student_confirm_delete.html 
+    success_url = reverse_lazy('list')
+    # success_url = '/list/'
+    pk_url_kwarg = 'id'

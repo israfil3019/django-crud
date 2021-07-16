@@ -17,6 +17,13 @@
 
   <body>
     <h1>With extends</h1>
+    
+    {% if messages %}
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
+    {% endif %}
+      
     <br />
     <hr />
     <br />
