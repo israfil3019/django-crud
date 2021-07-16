@@ -1,7 +1,9 @@
+from django.views.generic.base import TemplateView
 from .forms import StudentForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Student
+from django.views.generic import TemplateView,  ListView
 
 
 # def home(request):
@@ -12,6 +14,10 @@ def home_page(request):
     return render(request, "fscohort/home.html")
 
 
+class HomeView(TemplateView):
+    template_name = "fscohort/home.html"
+
+
 def student_list(request):
     students = Student.objects.all()
 
@@ -20,6 +26,12 @@ def student_list(request):
     }
 
     return render(request, "fscohort/student_list.html", context)
+
+
+class StudentList(ListView):
+    model = Student
+    # template_name           # default app/student_list.html == we dont have to write this. 
+    context_object_name = "students"    # default object list
 
 
 def student_add(request):
