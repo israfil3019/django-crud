@@ -3,7 +3,8 @@ from .forms import StudentForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Student
-from django.views.generic import TemplateView,  ListView
+from django.views.generic import TemplateView,  ListView, CreateView, DetailView
+from django.urls import reverse_lazy
 
 
 # def home(request):
@@ -32,6 +33,8 @@ class StudentList(ListView):
     model = Student
     # template_name           # default app/student_list.html == we dont have to write this. 
     context_object_name = "students"    # default object list
+    # ordering = [nums]
+    paginate_by = 2
 
 
 def student_add(request):
@@ -47,6 +50,12 @@ def student_add(request):
     }
     return render(request, "fscohort/student_add.html", context)
 
+class StudentCreate(CreateView):
+    model = Student
+    form_class = StudentForm
+    template_name = "fscohort/student_add.html"  # app/student_form.html  == suffix  '_form'
+    success_url = reverse_lazy('list')  # redirect == '/list/'
+
 
 def student_detail(request, id):
     student = Student.objects.get(id=id)
@@ -54,6 +63,12 @@ def student_detail(request, id):
         "student": student
     }
     return render(request, "fscohort/student_detail.html", context)
+
+
+class StudentDetail(DetailView):
+    model = Student
+    # pk_url_kwarg = 'id'  # from detail.py we can use id instead of pk
+    # template_name = 
 
 
 # def student_update(request, id):

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import StudentList, student_add, student_delete, student_detail, student_list, student_update, HomeView
+from .views import StudentCreate, StudentDetail, StudentList, student_delete, student_update, HomeView
 # from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -8,8 +8,11 @@ urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     # path("list/", student_list, name="list"),
     path("list/", StudentList.as_view(), name="list"),
-    path("add/", student_add, name="add"),
-    path("<int:id>/", student_detail, name="detail"),
+    # path("add/", student_add, name="add"),
+    path("add/", StudentCreate.as_view(), name="add"),
+    # path("<int:id>/", student_detail, name="detail"),     # it use id; we can change it from detail.py
+    # must call with slug or object pk; //
+    path("<int:pk>/", StudentDetail.as_view(), name="detail"),
     path("<int:id>/update/", student_update, name="update"),
     path("<int:id>/delete/", student_delete, name="delete"),
 ]
